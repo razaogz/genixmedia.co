@@ -1,4 +1,5 @@
 import { Navbar } from '@/components/navbar';
+import { IntroSection } from '@/components/intro-section';
 import { Hero } from '@/components/hero';
 import { About } from '@/components/about';
 import { Services } from '@/components/services';
@@ -14,6 +15,7 @@ import { Footer } from '@/components/footer';
 export default function Home() {
   return (
     <>
+      <IntroSection />
       <Navbar />
       <Hero />
       <About />

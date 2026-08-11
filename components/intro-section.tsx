@@ -1,20 +1,17 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ArrowRight, Volume2 } from 'lucide-react';
+import { Volume2 } from 'lucide-react';
 import { GenixLogo } from '@/components/genix-logo';
 
 const VIDEO_SRC =
   'https://res.cloudinary.com/ohimcwqb/video/upload/v1786380756/0083E2A8-9C20-474E-A9FF-FA5C227227E9.mp4';
 
-export default function IntroPage() {
-  const router = useRouter();
+export function IntroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [soundBlocked, setSoundBlocked] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(false);
-  const [entered, setEntered] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -60,14 +57,8 @@ export default function IntroPage() {
     setSoundBlocked(false);
   };
 
-  const handleEnter = () => {
-    if (entered) return;
-    setEntered(true);
-    router.push('/home');
-  };
-
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#050505] px-6 py-10">
+    <section className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#050505] px-6 py-10">
       {/* Ambient glow */}
       <div className="pointer-events-none absolute left-1/4 top-0 h-[500px] w-[500px] rounded-full bg-white/[0.02] blur-[120px]" />
       <div className="pointer-events-none absolute -right-1/4 top-1/3 h-[400px] w-[400px] rounded-full bg-white/[0.02] blur-[120px]" />
@@ -117,29 +108,18 @@ export default function IntroPage() {
         </div>
       </motion.div>
 
-      {/* Continue */}
+      {/* Scroll cue */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="mt-10 flex flex-col items-center gap-4"
+        className="mt-10 flex flex-col items-center gap-3"
       >
         <p className="text-xs uppercase tracking-[0.2em] text-white/40">
           Welcome to Genix Media
         </p>
-        <motion.button
-          onClick={handleEnter}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="group flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition-opacity hover:opacity-90"
-        >
-          Continue
-          <ArrowRight
-            size={16}
-            className="transition-transform group-hover:translate-x-1"
-          />
-        </motion.button>
+        <p className="text-xs text-white/30">Scroll to explore</p>
       </motion.div>
-    </div>
+    </section>
   );
 }
