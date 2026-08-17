@@ -10,7 +10,7 @@ import { SectionDecor } from '@/components/section-decor';
 const SOCIALS = [
   {
     label: 'Instagram',
-    value: '@genixmedia',
+    value: '@genixmediaco',
     href: 'https://instagram.com/genixmediaco',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
