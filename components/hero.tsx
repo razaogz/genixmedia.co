@@ -10,7 +10,7 @@ const HeroScene = dynamic(
   { ssr: false }
 );
 
-const HEADLINE = 'BUILDING THE DIGITAL OPERATING SYSTEM YOUR BUSINESS NEEDS.';
+const HEADLINE = 'THE SOLE DIGITAL PARTNER FOR BUSINESSES BUILT ONLINE.';
 
 function AnimatedHeadline() {
   return (
