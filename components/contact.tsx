@@ -20,7 +20,7 @@ const SOCIALS = [
   },
   {
     label: 'X',
-    value: '@genixmedia',
+    value: '@genixmedia_co',
     href: 'https://twitter.com',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
