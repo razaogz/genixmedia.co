@@ -130,7 +130,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 3.6 }}
           className="mt-8 max-w-2xl text-base text-white/50 sm:text-lg"
         >
-          From managing digital assets and reputation to driving growth and building SaaS — Genix brings the digital capabilities your business needs all under one roof.
+          From managing digital assets and reputation to driving growth and building SaaS Genix brings the digital capabilities your business needs all under one roof.
         </motion.p>
 
         <motion.div
