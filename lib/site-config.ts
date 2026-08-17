@@ -1,5 +1,5 @@
 export const SITE_CONFIG = {
-  email: 'hello@genixmedia.com',
+  email: 'sales@genixmedia.co',
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP || '',
   phone: process.env.NEXT_PUBLIC_PHONE || '',
 };
