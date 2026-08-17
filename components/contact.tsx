@@ -41,7 +41,7 @@ const SOCIALS = [
   {
     label: 'Email',
     value: 'sales@genixmedia.co',
-    href: 'mailto:hello@genixmedia.com',
+    href: 'mailto:sales@genixmedia.co',
     icon: <Mail size={20} />,
   },
   {
