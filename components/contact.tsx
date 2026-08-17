@@ -40,7 +40,7 @@ const SOCIALS = [
   },
   {
     label: 'Email',
-    value: 'hello@genixmedia.com',
+    value: 'sales@genixmedia.co',
     href: 'mailto:hello@genixmedia.com',
     icon: <Mail size={20} />,
   },
