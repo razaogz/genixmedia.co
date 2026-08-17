@@ -118,7 +118,7 @@ export function IntroSection() {
         <p className="text-xs uppercase tracking-[0.2em] text-white/40">
           Welcome to Genix Media
         </p>
-        <p className="text-xs text-white/30">Scroll to explore</p>
+        <p className="text-sm text-white/60">Digital operations, built for what comes next.</p>
       </motion.div>
     </section>
   );
