@@ -7,6 +7,10 @@ const nextConfig = {
   },
   images: { unoptimized: true },
   outputFileTracingRoot: path.resolve(__dirname),
+  experimental: {
+    cpus: 1,
+    workerThreads: false,
+  },
 };
 
 module.exports = nextConfig;

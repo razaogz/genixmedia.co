@@ -1,12 +1,17 @@
 'use client';
 
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { SectionReveal, SectionHeader } from '@/components/section-utils';
 import { SectionDecor } from '@/components/section-decor';
-import { SolutionVisual } from '@/components/solution-3d';
 import { SITE_CONFIG } from '@/lib/site-config';
+
+const SolutionVisual = dynamic(
+  () => import('@/components/solution-3d').then((module) => module.SolutionVisual),
+  { ssr: false }
+);
 
 const PILLARS = [
   {
