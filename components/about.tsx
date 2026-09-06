@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, type PointerEvent, type ReactNode } from 'react';
+import Image from 'next/image';
 import { SectionReveal } from '@/components/section-utils';
 
 type CapabilityId = 'assets' | 'technology' | 'reputation' | 'growth';
@@ -166,23 +167,36 @@ export function About() {
       return;
     }
 
-    cardRefs.current.forEach((cardElement, id) => {
-      const interaction = interactionRef.current.get(id);
-      if (!interaction) return;
+    let closestId: CapabilityId | null = null;
+    let closestDistance = Number.POSITIVE_INFINITY;
+    const distances = new Map<CapabilityId, { distance: number; x: number; y: number }>();
 
+    cardRefs.current.forEach((cardElement, id) => {
       const bounds = cardElement.getBoundingClientRect();
       const nearestX = Math.max(bounds.left, Math.min(event.clientX, bounds.right));
       const nearestY = Math.max(bounds.top, Math.min(event.clientY, bounds.bottom));
       const distance = Math.hypot(event.clientX - nearestX, event.clientY - nearestY);
-      const proximity = Math.max(0, 1 - distance / 150);
       const normalizedX = Math.max(-1, Math.min(1, (event.clientX - bounds.left) / bounds.width * 2 - 1));
       const normalizedY = Math.max(-1, Math.min(1, (event.clientY - bounds.top) / bounds.height * 2 - 1));
 
+      distances.set(id, { distance, x: normalizedX, y: normalizedY });
+      if (distance < closestDistance) {
+        closestId = id;
+        closestDistance = distance;
+      }
+    });
+
+    cardRefs.current.forEach((cardElement, id) => {
+      const interaction = interactionRef.current.get(id);
+      const pointer = distances.get(id);
+      if (!interaction || !pointer) return;
+
+      const proximity = id === closestId ? Math.max(0, 1 - pointer.distance / 150) : 0;
       interaction.target = [
-        normalizedX * 8 * proximity,
-        normalizedY * 6 * proximity,
-        -normalizedY * 3.2 * proximity,
-        normalizedX * 3.2 * proximity,
+        pointer.x * 8 * proximity,
+        pointer.y * 6 * proximity,
+        -pointer.y * 3.2 * proximity,
+        pointer.x * 3.2 * proximity,
         1 + 0.1 * proximity,
         1 + 0.012 * proximity,
       ];
@@ -201,7 +215,7 @@ export function About() {
   return (
     <section id="genix-ecosystem" className="relative overflow-hidden py-28 sm:py-36 lg:py-40">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="grid grid-cols-1 items-center gap-16 xl:grid-cols-2 xl:gap-10">
+        <div className="grid grid-cols-1 items-center gap-16 xl:grid-cols-[0.68fr_1.32fr] xl:gap-16">
           <div>
             <SectionReveal>
               <span className="inline-block text-xs font-medium uppercase tracking-[0.2em] text-white/40">
@@ -237,23 +251,22 @@ export function About() {
               onPointerMove={setCardTargets}
               onPointerLeave={resetCards}
             >
-              <svg className="ecosystem-connections" viewBox="0 0 100 100" aria-hidden="true">
-                <g>
-                  <line x1="50" y1="50" x2="50" y2="15" />
-                  <line x1="50" y1="50" x2="19" y2="50" />
-                  <line x1="50" y1="50" x2="81" y2="50" />
-                  <line x1="50" y1="50" x2="50" y2="85" />
-                  <circle cx="50" cy="50" r="0.9" />
-                  <circle cx="50" cy="15" r="0.7" />
-                  <circle cx="19" cy="50" r="0.7" />
-                  <circle cx="81" cy="50" r="0.7" />
-                  <circle cx="50" cy="85" r="0.7" />
-                </g>
-              </svg>
+              <div className="ecosystem-connections" aria-hidden="true">
+                <span className="ecosystem-connection ecosystem-connection--top" />
+                <span className="ecosystem-connection ecosystem-connection--left" />
+                <span className="ecosystem-connection ecosystem-connection--right" />
+                <span className="ecosystem-connection ecosystem-connection--bottom" />
+              </div>
 
               <div className="ecosystem-core" aria-label="Genix digital ecosystem">
-                <span>GENIX</span>
-                <small>DIGITAL ECOSYSTEM</small>
+                <Image
+                  className="ecosystem-core__logo"
+                  src="/assets/images/genix-logo-new-transparent.png"
+                  alt="Genix"
+                  width={128}
+                  height={128}
+                  priority
+                />
               </div>
 
               {CARDS.map((card) => (
