@@ -25,10 +25,17 @@ const SOLUTION_ICONS: Record<string, typeof LifeBuoy> = {
   Workflow,
 };
 
-const NAV_ITEMS = [
+interface NavItem {
+  label: string;
+  href: string;
+  mega?: boolean;
+  scroll?: boolean;
+}
+
+const NAV_ITEMS: NavItem[] = [
   { label: 'Home', href: '/' },
   { label: 'Solutions', href: '/solutions', mega: true },
-  { label: 'About', href: '/about' },
+  { label: 'About', href: '/#about', scroll: true },
 ];
 
 export function Navbar() {
@@ -57,7 +64,18 @@ export function Navbar() {
   }, [pathname]);
 
   const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href);
+    href === '/' ? pathname === '/' : href.startsWith('/#') ? false : pathname.startsWith(href);
+
+  const handleAboutClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setMobileOpen(false);
+    if (pathname !== '/') {
+      window.location.href = '/#about';
+    } else {
+      const el = document.getElementById('about');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
     <motion.header
@@ -112,6 +130,23 @@ export function Navbar() {
                 </Link>
                 <MegaMenu open={megaOpen} />
               </div>
+            ) : 'scroll' in item && item.scroll ? (
+              <button
+                key={item.label}
+                onClick={handleAboutClick}
+                className={cn(
+                  'group relative rounded-full px-4 py-2 text-sm font-medium transition-colors',
+                  'text-white/55 hover:text-white'
+                )}
+              >
+                {item.label}
+                <span
+                  className={cn(
+                    'absolute inset-x-4 bottom-1 h-px origin-left bg-white/70 transition-transform duration-300',
+                    'scale-x-0 group-hover:scale-x-100'
+                  )}
+                />
+              </button>
             ) : (
               <Link
                 key={item.label}
@@ -161,15 +196,25 @@ export function Navbar() {
             className="absolute left-4 right-4 top-[72px] overflow-hidden rounded-3xl border border-white/10 bg-[#08060d]/95 p-3 shadow-2xl backdrop-blur-xl lg:hidden"
           >
             <div className="flex flex-col gap-0.5">
-              {NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="rounded-2xl px-4 py-3 text-sm font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {NAV_ITEMS.map((item) =>
+                'scroll' in item && item.scroll ? (
+                  <button
+                    key={item.label}
+                    onClick={handleAboutClick}
+                    className="rounded-2xl px-4 py-3 text-left text-sm font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white"
+                  >
+                    {item.label}
+                  </button>
+                ) : (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="rounded-2xl px-4 py-3 text-sm font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white"
+                  >
+                    {item.label}
+                  </Link>
+                )
+              )}
               <div className="my-2 h-px bg-white/8" />
               <p className="px-4 pb-1 text-[10px] uppercase tracking-[0.2em] text-white/35">
                 Solutions

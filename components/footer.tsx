@@ -7,7 +7,7 @@ import { GenixLogo } from '@/components/genix-logo';
 
 const FOOTER_LINKS: Record<string, { label: string; href: string }[]> = {
   Company: [
-    { label: 'About', href: '/about' },
+    { label: 'About', href: '/#about' },
     { label: 'Solutions', href: '/solutions' },
     { label: 'Contact', href: '/contact' },
   ],
