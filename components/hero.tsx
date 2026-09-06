@@ -134,7 +134,7 @@ export function Hero() {
       ref={ref}
       onPointerMove={handlePointerMove}
       onPointerLeave={resetPointer}
-      className="hero-section relative min-h-screen w-full overflow-hidden bg-black"
+      className="hero-section relative w-full bg-black"
     >
       <div className="absolute inset-0 z-0">
         <WebGLShader />
@@ -143,7 +143,7 @@ export function Hero() {
 
       <motion.div
         style={{ y }}
-        className="hero-content relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center"
+        className="hero-content relative z-10 flex flex-col items-center justify-center px-6 text-center"
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}

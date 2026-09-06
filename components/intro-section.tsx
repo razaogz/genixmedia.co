@@ -68,7 +68,7 @@ export function IntroSection() {
   };
 
   return (
-    <section className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-black px-6 py-10">
+    <section className="intro-section relative flex w-full flex-col items-center justify-center bg-black px-6 py-10">
       {/* Purple liquid-metal background — same treatment as hero */}
       <div className="absolute inset-0 z-0">
         <WebGLShader />
@@ -97,7 +97,7 @@ export function IntroSection() {
             <video
               ref={videoRef}
               src={VIDEO_SRC}
-              className="h-full w-full object-contain"
+              className="block h-full w-full max-w-full object-contain"
               controls
               playsInline
               preload="auto"

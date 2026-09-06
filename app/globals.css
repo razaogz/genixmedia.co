@@ -78,6 +78,21 @@
 }
 
 /* Hero capability panels: small, useful interfaces that frame the main message. */
+.intro-section,
+.hero-section {
+  min-height: 100svh;
+  height: auto;
+  overflow-x: clip;
+}
+
+.hero-content {
+  min-height: 100svh;
+}
+
+.intro-section {
+  isolation: isolate;
+}
+
 .hero-section {
   --hero-pan-x: 0px;
   --hero-pan-y: 0px;
@@ -95,8 +110,8 @@
 .hero-panel {
   --panel-rotation: rotateX(4deg) rotateY(-6deg);
   position: absolute;
-  width: 236px;
-  height: 142px;
+  width: clamp(180px, 16.4vw, 236px);
+  height: clamp(124px, 9.85vw, 142px);
   perspective: 900px;
   pointer-events: auto;
   animation: hero-panel-float 7s ease-in-out infinite;
@@ -104,27 +119,27 @@
 
 .hero-panel--assets {
   top: 8%;
-  left: 6.5%;
+  left: clamp(12px, 6.5vw, 94px);
   --panel-rotation: rotateX(5deg) rotateY(8deg) rotateZ(-3deg);
   animation-delay: -1.5s;
 }
 
 .hero-panel--reputation {
   top: 8%;
-  right: 6.5%;
+  right: clamp(12px, 6.5vw, 94px);
   --panel-rotation: rotateX(4deg) rotateY(-8deg) rotateZ(3deg);
   animation-delay: -4s;
 }
 
 .hero-panel--software {
   bottom: 17%;
-  left: 8%;
+  left: clamp(16px, 8vw, 115px);
   --panel-rotation: rotateX(-4deg) rotateY(9deg) rotateZ(2deg);
   animation-delay: -3s;
 }
 
 .hero-panel--growth {
-  right: 8%;
+  right: clamp(16px, 8vw, 115px);
   bottom: 15%;
   --panel-rotation: rotateX(-4deg) rotateY(-9deg) rotateZ(-2deg);
   animation-delay: -5.5s;
@@ -335,18 +350,11 @@
 }
 
 @media (max-width: 1100px) and (min-width: 768px) {
-  .hero-panel { width: 205px; height: 132px; }
-  .hero-panel--assets { left: 2%; }
-  .hero-panel--reputation { right: 2%; }
-  .hero-panel--software { left: 3%; }
-  .hero-panel--growth { right: 3%; }
   .hero-panel__copy { display: block; }
   .hero-panel__copy small { display: block; margin-top: 4px; }
 }
 
 @media (max-width: 767px) {
-  .hero-content { min-height: 680px; }
-
   .hero-supporting-panels {
     position: relative;
     display: grid;

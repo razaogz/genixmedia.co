@@ -13,6 +13,7 @@ export function WebGLShader() {
     let renderer: THREE.WebGLRenderer | null = null;
     let animationId = 0;
     let resizeObserver: ResizeObserver | null = null;
+    let resolution: THREE.Vector2 | null = null;
 
     const init = () => {
       const width = container.clientWidth;
@@ -21,7 +22,9 @@ export function WebGLShader() {
 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-      renderer.setSize(width, height);
+      renderer.setSize(width, height, false);
+      renderer.domElement.style.width = '100%';
+      renderer.domElement.style.height = '100%';
       renderer.setClearColor(0x020106, 1);
       container.appendChild(renderer.domElement);
       renderer.domElement.classList.add('block', 'h-full', 'w-full');
@@ -32,6 +35,7 @@ export function WebGLShader() {
         uTime: { value: 0 },
         uResolution: { value: new THREE.Vector2(width, height) },
       };
+      resolution = uniforms.uResolution.value;
 
       const material = new THREE.ShaderMaterial({
         uniforms,
@@ -145,25 +149,33 @@ export function WebGLShader() {
       };
       render();
 
-      const onResize = () => {
-        if (!renderer) return;
-        const nextWidth = container.clientWidth;
-        const nextHeight = container.clientHeight;
-        if (nextWidth === 0 || nextHeight === 0) return;
-        renderer.setSize(nextWidth, nextHeight);
-        uniforms.uResolution.value.set(nextWidth, nextHeight);
-      };
-
-      resizeObserver = new ResizeObserver(onResize);
-      resizeObserver.observe(container);
     };
 
+    const resize = () => {
+      const nextWidth = container.clientWidth;
+      const nextHeight = container.clientHeight;
+      if (nextWidth === 0 || nextHeight === 0) return;
+
+      if (!renderer) {
+        init();
+        return;
+      }
+
+      renderer.setSize(nextWidth, nextHeight, false);
+      renderer.domElement.style.width = '100%';
+      renderer.domElement.style.height = '100%';
+      resolution?.set(nextWidth, nextHeight);
+    };
+
+    resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(container);
     init();
 
     return () => {
       cancelAnimationFrame(animationId);
       resizeObserver?.disconnect();
       renderer?.dispose();
+      resolution = null;
       if (renderer?.domElement.parentNode === container) {
         container.removeChild(renderer.domElement);
       }
