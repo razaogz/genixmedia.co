@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, MapPin, Send, Loader2, CheckCircle2 } from 'lucide-react';
+import { Mail, Send, Loader2, CheckCircle2 } from 'lucide-react';
 import { SectionReveal, SectionHeader } from '@/components/section-utils';
 import { supabase } from '@/lib/supabase';
 import { SectionDecor } from '@/components/section-decor';
@@ -20,7 +20,7 @@ const SOCIALS = [
   },
   {
     label: 'X',
-    value: '@genixmedia_co',
+    value: '@genixmediaco',
     href: 'https://x.com/genixmediaco',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -43,12 +43,6 @@ const SOCIALS = [
     value: 'sales@genixmedia.co',
     href: 'mailto:sales@genixmedia.co',
     icon: <Mail size={20} />,
-  },
-  {
-    label: 'Location',
-    value: 'Worldwide',
-    href: '#',
-    icon: <MapPin size={20} />,
   },
 ];
 
