@@ -36,6 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
+        data-loading="true"
         className={`${GeistSans.variable} ${GeistMono.variable} font-sans antialiased`}
       >
         <SiteBackground />

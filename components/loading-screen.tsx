@@ -3,17 +3,37 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
+const LOADING_DURATION = 2000;
+const FADE_DURATION = 0.45;
+
 export function LoadingScreen() {
-  const [loading, setLoading] = useState(true);
+  const [phase, setPhase] = useState<'loading' | 'fading' | 'done'>('loading');
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setLoading(false), 2000);
-    return () => window.clearTimeout(timer);
+    document.body.dataset.loading = 'true';
+    const timer = window.setTimeout(() => setPhase('fading'), LOADING_DURATION);
+
+    return () => {
+      window.clearTimeout(timer);
+      delete document.body.dataset.loading;
+    };
   }, []);
 
-  return loading ? (
+  if (phase === 'done') return null;
+
+  return (
     <motion.div
-      className="fixed inset-0 z-[10000] flex items-center justify-center bg-[radial-gradient(circle_at_center,rgba(76,29,149,0.16),transparent_38%),#030303]"
+      data-loading-screen
+      className="fixed inset-0 z-[2147483647] flex items-center justify-center bg-black"
+      animate={{ opacity: phase === 'fading' ? 0 : 1 }}
+      transition={{ duration: FADE_DURATION, ease: 'easeInOut' }}
+      onAnimationComplete={() => {
+        if (phase !== 'fading') return;
+        setPhase('done');
+        window.requestAnimationFrame(() => {
+          delete document.body.dataset.loading;
+        });
+      }}
       aria-label="Loading Genix Media"
     >
       <div className="flex w-full max-w-xs flex-col items-center px-8">
@@ -40,7 +60,7 @@ export function LoadingScreen() {
             className="h-full bg-white"
             initial={{ width: '0%' }}
             animate={{ width: '100%' }}
-            transition={{ duration: 2, ease: 'linear' }}
+            transition={{ duration: LOADING_DURATION / 1000, ease: 'linear' }}
           />
         </div>
         <span className="mt-3 text-[0.55rem] font-medium uppercase tracking-[0.35em] text-white/35">
@@ -48,5 +68,5 @@ export function LoadingScreen() {
         </span>
       </div>
     </motion.div>
-  ) : null;
+  );
 }

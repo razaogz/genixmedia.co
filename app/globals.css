@@ -49,6 +49,19 @@
     color: #ffffff;
     overflow-x: hidden;
   }
+
+  body[data-loading='true'] {
+    background: #000 !important;
+    background-image: none !important;
+  }
+
+  body[data-loading='true'] > :not([data-loading-screen]) {
+    visibility: hidden;
+  }
+
+  body[data-loading='true'] > [data-loading-screen] {
+    visibility: visible;
+  }
 }
 
 .site-background {
