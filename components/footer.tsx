@@ -73,7 +73,7 @@ export function Footer() {
   const [subscribed, setSubscribed] = useState(false);
 
   return (
-    <footer className="relative border-t border-white/10 pt-20">
+    <footer className="relative pt-20">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           {/* Brand + Newsletter */}

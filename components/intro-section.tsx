@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Volume2 } from 'lucide-react';
 import { GenixLogo } from '@/components/genix-logo';
-import { WebGLShader } from '@/components/ui/web-gl-shader';
 
 const VIDEO_SRC =
   'https://res.cloudinary.com/zigu4hor/video/upload/v1788293829/Copy_of_Genixfinalvideowith1strevison.mp4';
@@ -68,13 +67,7 @@ export function IntroSection() {
   };
 
   return (
-    <section className="intro-section relative flex w-full flex-col items-center justify-center bg-black px-6 py-10">
-      {/* Purple liquid-metal background — same treatment as hero */}
-      <div className="absolute inset-0 z-0">
-        <WebGLShader />
-      </div>
-      <div className="absolute inset-0 z-[1] pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.3)_0%,transparent_60%)]" />
-
+    <section className="intro-section relative flex w-full flex-col items-center justify-center px-6 py-10">
       {/* Logo */}
       <motion.div
         initial={{ opacity: 0, y: -16 }}

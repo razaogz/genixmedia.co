@@ -4,6 +4,7 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { SmoothScroll } from '@/components/smooth-scroll';
 import { LoadingScreen } from '@/components/loading-screen';
+import { SiteBackground } from '@/components/site-background';
 
 export const metadata: Metadata = {
   title: 'Genix Media — Digital Reputation Management & Social Media Solutions',
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} font-sans antialiased`}
       >
+        <SiteBackground />
         <LoadingScreen />
         <SmoothScroll />
         <main className="relative z-10">{children}</main>

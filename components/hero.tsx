@@ -4,7 +4,6 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Compass } from 'lucide-react';
-import { WebGLShader } from '@/components/ui/web-gl-shader';
 
 const HEADLINE = 'THE SOLE DIGITAL PARTNER FOR BUSINESSES BUILT ONLINE.';
 
@@ -134,13 +133,8 @@ export function Hero() {
       ref={ref}
       onPointerMove={handlePointerMove}
       onPointerLeave={resetPointer}
-      className="hero-section relative w-full bg-black"
+      className="hero-section relative w-full"
     >
-      <div className="absolute inset-0 z-0">
-        <WebGLShader />
-      </div>
-      <div className="absolute inset-0 z-[1] pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.35)_0%,transparent_55%)]" />
-
       <motion.div
         style={{ y }}
         className="hero-content relative z-10 flex flex-col items-center justify-center px-6 text-center"

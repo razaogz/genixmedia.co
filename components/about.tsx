@@ -127,7 +127,7 @@ export function About() {
   };
 
   return (
-    <section id="genix-ecosystem" className="relative overflow-hidden bg-black py-28 sm:py-36 lg:py-40">
+    <section id="genix-ecosystem" className="relative overflow-hidden py-28 sm:py-36 lg:py-40">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 items-center gap-16 xl:grid-cols-2 xl:gap-10">
           <div>
