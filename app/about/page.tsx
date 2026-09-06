@@ -5,7 +5,7 @@ import { Statistics } from '@/components/statistics';
 export default function AboutPage() {
   return (
     <PageShell>
-      <div className="pt-20" />
+      <div className="pt-24" />
       <About />
       <Statistics />
     </PageShell>
