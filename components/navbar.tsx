@@ -35,7 +35,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: 'Home', href: '/' },
   { label: 'Solutions', href: '/solutions', mega: true },
-  { label: 'About', href: '/#about', scroll: true },
+  { label: 'About', href: '/#genix-ecosystem', scroll: true },
 ];
 
 export function Navbar() {
@@ -70,9 +70,9 @@ export function Navbar() {
     e.preventDefault();
     setMobileOpen(false);
     if (pathname !== '/') {
-      window.location.href = '/#about';
+      window.location.href = '/#genix-ecosystem';
     } else {
-      const el = document.getElementById('about');
+      const el = document.getElementById('genix-ecosystem');
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
