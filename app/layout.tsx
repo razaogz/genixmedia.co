@@ -11,9 +11,9 @@ export const metadata: Metadata = {
   description:
     'Genix Media is a premium Digital Reputation Management & Social Media Solutions company helping creators, brands, businesses, and public figures protect, recover, optimize, and grow their online presence.',
   icons: {
-    icon: '/favicon.jpg',
-    shortcut: '/favicon.jpg',
-    apple: '/favicon.jpg',
+    icon: '/assets/images/genix-logo-new-transparent.png',
+    shortcut: '/assets/images/genix-logo-new-transparent.png',
+    apple: '/assets/images/genix-logo-new-transparent.png',
   },
   openGraph: {
     title: 'Genix Media — Digital Reputation Management & Social Media Solutions',
