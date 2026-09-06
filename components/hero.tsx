@@ -82,6 +82,30 @@ function MagneticButton({
   );
 }
 
+function HeroPanel({
+  kind,
+  label,
+  description,
+  children,
+}: {
+  kind: 'assets' | 'reputation' | 'software' | 'growth';
+  label: string;
+  description: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <article className={`hero-panel hero-panel--${kind}`}>
+      <div className="hero-panel__surface">
+        <div className="hero-panel__visual">{children}</div>
+        <div className="hero-panel__copy">
+          <span>{label}</span>
+          <small>{description}</small>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -90,11 +114,27 @@ export function Hero() {
   });
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
 
+  const handlePointerMove = (event: React.PointerEvent<HTMLElement>) => {
+    if (event.pointerType === 'touch' || !ref.current) return;
+    const bounds = ref.current.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 10;
+    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 7;
+    ref.current.style.setProperty('--hero-pan-x', `${x.toFixed(2)}px`);
+    ref.current.style.setProperty('--hero-pan-y', `${y.toFixed(2)}px`);
+  };
+
+  const resetPointer = () => {
+    ref.current?.style.setProperty('--hero-pan-x', '0px');
+    ref.current?.style.setProperty('--hero-pan-y', '0px');
+  };
+
   return (
     <section
       id="home"
       ref={ref}
-      className="relative h-screen w-full overflow-hidden bg-black"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={resetPointer}
+      className="hero-section relative min-h-screen w-full overflow-hidden bg-black"
     >
       <div className="absolute inset-0 z-0">
         <WebGLShader />
@@ -103,7 +143,7 @@ export function Hero() {
 
       <motion.div
         style={{ y }}
-        className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center"
+        className="hero-content relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center"
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -145,6 +185,52 @@ export function Hero() {
           </Link>
         </motion.div>
       </motion.div>
+
+      <div className="hero-supporting-panels" aria-label="Genix Media capabilities">
+        <HeroPanel kind="assets" label="DIGITAL ASSETS" description="Manage. Organize. Scale.">
+          <div className="hero-assets-stack" aria-hidden="true">
+            <span className="hero-assets-stack__back" />
+            <span className="hero-assets-stack__middle" />
+            <span className="hero-assets-stack__front">
+              <i />
+              <b />
+              <em />
+            </span>
+            <span className="hero-assets-stack__folder">↗</span>
+          </div>
+        </HeroPanel>
+
+        <HeroPanel kind="reputation" label="PR & REPUTATION" description="Visibility that builds trust.">
+          <div className="hero-reputation-list" aria-hidden="true">
+            <div className="hero-reputation-list__top"><span /> MEDIA MENTION <b>+</b></div>
+            <div><i /> Brand Coverage <strong>active</strong></div>
+            <div><i /> Positive Sentiment <strong>steady</strong></div>
+          </div>
+        </HeroPanel>
+
+        <HeroPanel kind="software" label="SAAS & SOFTWARE" description="Build. Operate. Scale.">
+          <div className="hero-software-window" aria-hidden="true">
+            <div className="hero-software-window__bar"><i /><i /><i /></div>
+            <div className="hero-software-window__body">
+              <div className="hero-software-window__sidebar"><span /><span /><span /><span /></div>
+              <div className="hero-software-window__workspace">
+                <span /><span /><span /><b /><b />
+              </div>
+            </div>
+          </div>
+        </HeroPanel>
+
+        <HeroPanel kind="growth" label="GROWTH" description="Acquire. Convert. Scale.">
+          <div className="hero-growth-chart" aria-hidden="true">
+            <div className="hero-growth-chart__labels"><span>↑</span><small>momentum</small></div>
+            <svg viewBox="0 0 180 68" preserveAspectRatio="none">
+              <path d="M4 58 C24 53, 28 48, 45 51 S65 43, 82 45 S102 34, 117 37 S138 24, 151 27 S168 12, 176 8" />
+              <path className="hero-growth-chart__glow" d="M4 58 C24 53, 28 48, 45 51 S65 43, 82 45 S102 34, 117 37 S138 24, 151 27 S168 12, 176 8" />
+              <circle cx="176" cy="8" r="3" />
+            </svg>
+          </div>
+        </HeroPanel>
+      </div>
 
       <motion.div
         initial={{ opacity: 0 }}
