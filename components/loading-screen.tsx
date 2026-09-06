@@ -63,9 +63,6 @@ export function LoadingScreen() {
             transition={{ duration: LOADING_DURATION / 1000, ease: 'linear' }}
           />
         </div>
-        <span className="mt-3 text-[0.55rem] font-medium uppercase tracking-[0.35em] text-white/35">
-          Loading
-        </span>
       </div>
     </motion.div>
   );
