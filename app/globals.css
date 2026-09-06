@@ -608,7 +608,7 @@
   top: 3%;
   left: 50%;
   transform-origin: 50% 100%;
-  margin-left: -9%;
+  margin-left: -23.5%;
 }
 
 .ecosystem-card--technology {
@@ -627,7 +627,7 @@
   bottom: 3%;
   left: 50%;
   transform-origin: 50% 0;
-  margin-left: -2%;
+  margin-left: -23.5%;
 }
 
 @media (max-width: 767px) {
