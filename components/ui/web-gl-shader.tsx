@@ -135,10 +135,11 @@ export function WebGLShader() {
 
       const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
       scene.add(mesh);
-      const clock = new THREE.Clock();
+      const timer = new THREE.Timer();
 
       const render = () => {
-        uniforms.uTime.value = clock.getElapsedTime();
+        timer.update();
+        uniforms.uTime.value = timer.getElapsed();
         renderer!.render(scene, camera);
         animationId = requestAnimationFrame(render);
       };
