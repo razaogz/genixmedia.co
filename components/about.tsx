@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, type PointerEvent, type ReactNode } from 'react';
 import { SectionReveal } from '@/components/section-utils';
 
 type CapabilityId = 'assets' | 'technology' | 'reputation' | 'growth';
@@ -79,19 +79,16 @@ const CARDS: CapabilityCard[] = [
 
 function EcosystemCard({
   card,
-  active,
-  onActiveChange,
+  register,
 }: {
   card: CapabilityCard;
-  active: boolean;
-  onActiveChange: (id: CapabilityId | null) => void;
+  register: (id: CapabilityId, element: HTMLElement | null) => void;
 }) {
   return (
     <article
-      className={`ecosystem-card ${card.placement} ${active ? 'is-active' : ''}`}
+      ref={(element) => register(card.id, element)}
+      className={`ecosystem-card ${card.placement}`}
       style={{ '--card-rotation': card.rotation } as React.CSSProperties}
-      onMouseEnter={() => onActiveChange(card.id)}
-      onMouseLeave={() => onActiveChange(null)}
     >
       <div className="ecosystem-card__face">
         <div className="ecosystem-card__content">
@@ -108,22 +105,97 @@ function EcosystemCard({
 }
 
 export function About() {
-  const [activeId, setActiveId] = useState<CapabilityId | null>(null);
-  const ecosystemRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef(new Map<CapabilityId, HTMLElement>());
+  const interactionRef = useRef(
+    new Map<CapabilityId, { current: number[]; target: number[] }>(),
+  );
+  const frameRef = useRef<number | null>(null);
 
-  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    const element = ecosystemRef.current;
-    if (!element || event.pointerType === 'touch') return;
-    const bounds = element.getBoundingClientRect();
-    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 12;
-    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 8;
-    element.style.setProperty('--eco-shift-x', `${x.toFixed(2)}px`);
-    element.style.setProperty('--eco-shift-y', `${y.toFixed(2)}px`);
+  useEffect(() => {
+    return () => {
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    };
+  }, []);
+
+  const registerCard = (id: CapabilityId, element: HTMLElement | null) => {
+    if (element) {
+      cardRefs.current.set(id, element);
+      if (!interactionRef.current.has(id)) {
+        interactionRef.current.set(id, { current: [0, 0, 0, 0, 1, 1], target: [0, 0, 0, 0, 1, 1] });
+      }
+    } else {
+      cardRefs.current.delete(id);
+    }
   };
 
-  const resetPointer = () => {
-    ecosystemRef.current?.style.setProperty('--eco-shift-x', '0px');
-    ecosystemRef.current?.style.setProperty('--eco-shift-y', '0px');
+  const animateCards = () => {
+    let needsAnotherFrame = false;
+
+    cardRefs.current.forEach((cardElement, id) => {
+      const interaction = interactionRef.current.get(id);
+      if (!interaction) return;
+
+      let hasMotion = false;
+      interaction.current = interaction.current.map((value, index) => {
+        const next = value + (interaction.target[index] - value) * 0.16;
+        if (Math.abs(interaction.target[index] - next) > 0.01) hasMotion = true;
+        return next;
+      });
+
+      const [translateX, translateY, tiltX, tiltY, brightness, scale] = interaction.current;
+      cardElement.style.setProperty('--card-translate-x', `${translateX.toFixed(2)}px`);
+      cardElement.style.setProperty('--card-translate-y', `${translateY.toFixed(2)}px`);
+      cardElement.style.setProperty('--card-tilt-x', `${tiltX.toFixed(2)}deg`);
+      cardElement.style.setProperty('--card-tilt-y', `${tiltY.toFixed(2)}deg`);
+      cardElement.style.setProperty('--card-brightness', brightness.toFixed(3));
+      cardElement.style.setProperty('--card-scale', scale.toFixed(4));
+
+      if (hasMotion) needsAnotherFrame = true;
+    });
+
+    frameRef.current = needsAnotherFrame ? requestAnimationFrame(animateCards) : null;
+  };
+
+  const scheduleAnimation = () => {
+    if (frameRef.current === null) frameRef.current = requestAnimationFrame(animateCards);
+  };
+
+  const setCardTargets = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === 'touch') {
+      resetCards();
+      return;
+    }
+
+    cardRefs.current.forEach((cardElement, id) => {
+      const interaction = interactionRef.current.get(id);
+      if (!interaction) return;
+
+      const bounds = cardElement.getBoundingClientRect();
+      const nearestX = Math.max(bounds.left, Math.min(event.clientX, bounds.right));
+      const nearestY = Math.max(bounds.top, Math.min(event.clientY, bounds.bottom));
+      const distance = Math.hypot(event.clientX - nearestX, event.clientY - nearestY);
+      const proximity = Math.max(0, 1 - distance / 150);
+      const normalizedX = Math.max(-1, Math.min(1, (event.clientX - bounds.left) / bounds.width * 2 - 1));
+      const normalizedY = Math.max(-1, Math.min(1, (event.clientY - bounds.top) / bounds.height * 2 - 1));
+
+      interaction.target = [
+        normalizedX * 8 * proximity,
+        normalizedY * 6 * proximity,
+        -normalizedY * 3.2 * proximity,
+        normalizedX * 3.2 * proximity,
+        1 + 0.1 * proximity,
+        1 + 0.012 * proximity,
+      ];
+    });
+
+    scheduleAnimation();
+  };
+
+  const resetCards = () => {
+    interactionRef.current.forEach((interaction) => {
+      interaction.target = [0, 0, 0, 0, 1, 1];
+    });
+    scheduleAnimation();
   };
 
   return (
@@ -161,10 +233,9 @@ export function About() {
 
           <SectionReveal delay={0.15}>
             <div
-              ref={ecosystemRef}
               className="ecosystem-visual"
-              onPointerMove={handlePointerMove}
-              onPointerLeave={resetPointer}
+              onPointerMove={setCardTargets}
+              onPointerLeave={resetCards}
             >
               <svg className="ecosystem-connections" viewBox="0 0 100 100" aria-hidden="true">
                 <g>
@@ -189,8 +260,7 @@ export function About() {
                 <EcosystemCard
                   key={card.id}
                   card={card}
-                  active={activeId === card.id}
-                  onActiveChange={setActiveId}
+                  register={registerCard}
                 />
               ))}
             </div>
